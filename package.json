@@ -1,0 +1,23 @@
+{
+  "name": "spotify-project",
+  "version": "1.0.0",
+  "description": "Spotify visualizer",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MajorJon/Spotify_Webpage.git"
+  },
+  "author": "Jonathan Major",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MajorJon/Spotify_Webpage/issues"
+  },
+  "homepage": "https://github.com/MajorJon/Spotify_Webpage#readme",
+  "dependencies": {
+    "passport-spotify": "^1.1.0"
+  }
+}
