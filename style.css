@@ -6,7 +6,7 @@
 body {
   height: 100vh;
   display: grid;
-  grid-template-columns: [col-1] 80px [col-2] 50% [col-3] auto;
+  grid-template-columns: [col-1] 1fr [col-2] 1fr [col-3] 1fr;
   grid-template-rows: [row-1] 1fr [row-2] 1fr [row-3] 1fr;
   grid-gap: 15px 15px;
   justify-items: center;
@@ -19,15 +19,14 @@ body {
   height: 30vh;
   width: 50%;
   grid-column:  2 / 3;
-  grid-row: 2 / 4;
-  align-items: center;
-  justify-items: center
+  grid-row: 2 / 3;
+  place-self: center;
 }
 
 .wikipedia-info {
   grid-column: 3 / 4;
   grid-row: 1 / 4;
-  align-items: center;
+  place-self: center;
   }
 
 .sidebar {
