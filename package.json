@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/MajorJon/Spotify_Webpage#readme",
   "dependencies": {
+    "cookie-session": "^1.3.3",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
+    "mongoose": "^5.7.0",
+    "passport": "^0.4.0",
     "passport-spotify": "^1.1.0"
   }
 }
