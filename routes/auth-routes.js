@@ -9,8 +9,8 @@ router.get('/login', (req, res) => {
 
 //auth logout
 router.get('/logout', (req,res) => {
-  //handle with passport
-  res.send('logging out');
+  req.logOut();
+  res.redirect('/');
 });
 
 //auth with google
@@ -23,7 +23,8 @@ router.get(
   passport.authenticate('spotify', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.sendFile('home.html', {root: './views'});
+    console.log(req.user);
+    res.redirect('/');
   }
 );
 
