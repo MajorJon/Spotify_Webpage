@@ -4,23 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="/style.css" />
-    <title>Login</title>
+    <link href="/assets/style.css" rel="stylesheet" />
+    <title>Spotify Viewer</title>
   </head>
 
   <body>
     <nav>
       <ul>
+        <% if (user) { %>
         <li><a href="/auth/logout">Logout</a></li>
+        <% } %> <% if (!user) { %>
         <li><a href="/auth/login">Login</a></li>
+        <% } %>
         <li><a href="/">Homepage</a></li>
       </ul>
     </nav>
     <header>
-      <h1>Login using...</h1>
+      <% if (user) { %>
+      <h1>Logged in as <%= user.username %></h1>
+      <% } %>
+      <h1>Spotify: What's Playing?</h1>
+      <h2><%= songTitle%> - <%= artistName%></h2>
     </header>
-    <main>
-      <a class="spotify-btn" href="/auth/spotify">Spotify</a>
-    </main>
   </body>
 </html>

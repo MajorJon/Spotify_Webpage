@@ -4,7 +4,7 @@ const router = require('express').Router(),
 
 //auth login
 router.get('/login', (req, res) => {
-  res.sendFile('login.html', {root: './views'});
+  res.render('login', {user: req.user});
 });
 
 //auth logout
@@ -23,7 +23,6 @@ router.get(
   passport.authenticate('spotify', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    console.log(req.user);
     res.redirect('/');
   }
 );

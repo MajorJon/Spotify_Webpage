@@ -21,6 +21,8 @@ passport.use(
       callbackURL: "/auth/spotify/callback"
     },
     (accessToken, refreshToken, profile, done) => {
+      keys.spotify.clientAccessToken = accessToken;
+      keys.spotify.clientRefreshToken = refreshToken;
       User.findOne({ spotifyId: profile.id }).then(currentUser => {
         if (currentUser) {
           done(null, currentUser);
@@ -31,7 +33,6 @@ passport.use(
           })
             .save()
             .then(newUser => {
-              console.log("new user created: " + newUser);
               done(null, newUser);
             });
         }

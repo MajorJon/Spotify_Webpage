@@ -1,20 +1,24 @@
 const express = require("express"),
   authRoutes = require("./routes/auth-routes"),
   passportSetup = require("./config/passport-setup"),
+  getRecentlyPlayed = require("./config/https-requests"),
   mongoose = require("mongoose"),
   keys = require("./config/keys"),
-  passport = require('passport'),
-  cookieSession = require('cookie-session'),
+  passport = require("passport"),
+  cookieSession = require("cookie-session"),
   app = express();
 
 //set view engine and views folder
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/views"));
+app.set("views", __dirname + "/views");
+app.use("/assets", express.static("assets"));
 
-app.use(cookieSession({
-  maxAge: 24*60*60*1000,
-  keys:[keys.session.cookieKey]
-}));
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [keys.session.cookieKey]
+  })
+);
 
 //initialize passport, cookie session
 app.use(passport.initialize());
@@ -29,16 +33,31 @@ mongoose.connect(keys.mongodb.dbURI, {
 var db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error"));
-db.once("open", callback => {
-  console.log("Successfully connected to mongodb!");
-});
 
 // set up routes
 app.use("/auth", authRoutes);
 
 //render homescreen
 app.get("/", (req, res) => {
-  res.sendFile("home.html", { root: "./views" });
+  let song = "Title";
+  let artist = "Artist";
+  if (keys.spotify.clientAccessToken) {
+    getRecentlyPlayed(keys.spotify.clientAccessToken)
+      .then(data => {
+        song = data.name;
+        artist = data.artists[0].name;
+      })
+      .then(() => {
+        res.render("home", {
+          user: req.user,
+          songTitle: song,
+          artistName: artist
+        });
+      })
+      .catch(error => console.log(error));
+  } else {
+    res.render("home", { user: req.user, songTitle: song, artistName: artist });
+  }
 });
 
 app.listen(8888, () => {
