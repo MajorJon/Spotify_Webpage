@@ -15,6 +15,7 @@ app.use("/assets", express.static("assets"));
 
 app.use(
   cookieSession({
+    name: "session",
     maxAge: 24 * 60 * 60 * 1000,
     keys: [keys.session.cookieKey]
   })
@@ -39,24 +40,28 @@ app.use("/auth", authRoutes);
 
 //render homescreen
 app.get("/", (req, res) => {
-  let song = "Title";
-  let artist = "Artist";
-  if (keys.spotify.clientAccessToken) {
-    getRecentlyPlayed(keys.spotify.clientAccessToken)
+  let song = "Artist - Name";
+  if ("undefined" != typeof accToken) {
+    getRecentlyPlayed(accToken)
       .then(data => {
-        song = data.name;
-        artist = data.artists[0].name;
+        if (data) {
+          song = data.name + " - " + data.artists[0].name;
+        } else {
+          song = "Nothing Currently Playing";
+        }
       })
       .then(() => {
         res.render("home", {
           user: req.user,
-          songTitle: song,
-          artistName: artist
+          songTitle: song
         });
       })
       .catch(error => console.log(error));
   } else {
-    res.render("home", { user: req.user, songTitle: song, artistName: artist });
+    res.render("home", {
+      user: req.user,
+      songTitle: song
+    });
   }
 });
 
