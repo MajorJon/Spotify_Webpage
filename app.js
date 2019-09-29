@@ -40,27 +40,37 @@ app.use("/auth", authRoutes);
 
 //render homescreen
 app.get("/", (req, res) => {
-  let song = "Artist - Name";
+  let artist;
+  let song;
+  let songUrl;
   if ("undefined" != typeof accToken) {
     getRecentlyPlayed(accToken)
       .then(data => {
         if (data) {
-          song = data.name + " - " + data.artists[0].name;
-        } else {
-          song = "Nothing Currently Playing";
+          songUrl = data.album.images[0].url;
+          song = data.name;
+          artist = data.artists[0].name;
         }
       })
       .then(() => {
         res.render("home", {
           user: req.user,
-          songTitle: song
+          songTitle: song,
+          artistName: artist,
+          albumCover: songUrl,
+          songloaded: true,
+          color: "blue"
         });
       })
       .catch(error => console.log(error));
   } else {
     res.render("home", {
       user: req.user,
-      songTitle: song
+      songTitle: song,
+      artistName: artist,
+      albumCover: songUrl,
+      songloaded: false,
+      color: "red"
     });
   }
 });

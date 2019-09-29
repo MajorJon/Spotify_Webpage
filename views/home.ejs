@@ -4,27 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="refresh" content="15" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap"
+      rel="stylesheet"
+    />
     <link href="/assets/style.css" rel="stylesheet" />
     <title>Spotify Viewer</title>
   </head>
 
   <body>
-    <nav>
-      <ul>
-        <% if (user) { %>
-        <li><a href="/auth/logout">Logout</a></li>
-        <% } %> <% if (!user) { %>
-        <li><a href="/auth/login">Login</a></li>
-        <% } %>
-        <li><a href="/">Homepage</a></li>
-      </ul>
-    </nav>
-    <header>
-      <% if (user) { %>
-      <h1>Logged in as <%= user.username %></h1>
+    <div id="background">
+      <% if (songloaded) { %>
+      <div id="background-overlay" style = 'background-image: linear-gradient(white, <%= color %>)'></div>
       <% } %>
-      <h1>Spotify: What's Playing?</h1>
-      <h2><%= songTitle%></h2>
-    </header>
+      <nav>
+        <div class="logo">
+          <h4>Spotify</h4>
+        </div>
+        <ul>
+          <% if (user) { %>
+          <li><a href="/auth/logout">Logout</a></li>
+          <% } %> <% if (!user) { %>
+          <li><a href="/auth/login">Login</a></li>
+          <% } %>
+          <li><a href="/">Homepage</a></li>
+        </ul>
+      </nav>
+
+      <header>
+        <% if (!user) { %>
+        <h2 style="font-weight:bold; margin-top: 20px; margin-bottom: 2px;">
+          Sign in width Spotify to continue...
+        </h2>
+        <% } %> <% if (user && songloaded) { %>
+        <img style="margin-top: 20px" src="<%= albumCover%>" />
+        <h2 style="font-weight:bold; margin-top: 20px; margin-bottom: 2px;">
+          <%= songTitle%>
+        </h2>
+        <h3 style="margin-top: 0px"><%= artistName%></h3>
+        <% } %> <% if (user && !songloaded) { %>
+        <h2 style="font-weight:bold; margin-top: 20px; margin-bottom: 2px;">
+          Nothing Currently Playing
+        </h2>
+        <% } %>
+      </header>
+    </div>
   </body>
 </html>

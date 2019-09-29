@@ -1,24 +1,55 @@
-
 body {
-  font-family: "Courier New", Courier, monospace;
+  height: 100%;
   margin: 0;
 }
 
+#background {
+  background-image: url("fog.jpg");
+  background-size: cover;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  z-index: 1;
+}
+
+#background-overlay{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+
 nav {
-  background: #1db954;
-  padding: 20px 10px;
+  opacity: 0.4;
+  display: flex;
+  justify-content: space-around;
+  box-shadow: 0 8px 6px -6px black;
+  align-items: center;
+  background: black;
+  padding: 10px 20px;
+}
+
+nav:hover {
+  opacity: 1;
 }
 
 nav ul {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0;
+  display: flex;
+  justify-content: space-around;
+  width: 10%;
+
 }
 
 nav li {
   list-style-type: none;
   display: inline-block;
-  margin: 0 10px 0 0;
+  margin: 0 10px;
+
 }
 
 nav a {
@@ -26,22 +57,46 @@ nav a {
   font-size: 18px;
   background: rgba(255, 255, 255, 0.2);
   text-decoration: none;
+  letter-spacing: 2px;
   padding: 10px;
   display: block;
 }
 
+img {
+  width: 500px;
+  text-align: center;
+  box-shadow: 0 8px 6px -6px black;
+}
+
+.logo {
+  color: #ffff;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  
+}
 .spotify-btn {
-  color: #fff;
+  color: white;
   text-decoration: none;
   font-size: 18px;
   padding: 10px;
-  background: #1db954;
+  background: darkgrey;
 }
 
-main,
-header {
+
+
+main, header {
+  overflow-wrap: break-word;
+  display: flex;
   max-width: 960px;
   margin: 30px auto;
-  padding: 0 10px;
-  color: #333;
+  padding: 10 10px;
+  color: black;
+  flex-direction: column;
+  width: 500px;
+  justify-content: center;
+  align-items: center;
 }
+
+
