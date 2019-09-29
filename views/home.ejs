@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta http-equiv="refresh" content="15" />
+    <meta http-equiv="refresh" content="5" />
     <link
       href="https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap"
       rel="stylesheet"
@@ -16,11 +16,13 @@
   <body>
     <div id="background">
       <% if (songloaded) { %>
-      <div id="background-overlay" style = 'background-image: linear-gradient(white, <%= color %>)'></div>
+      <div id="background-overlay" style = 'background-image: linear-gradient(white, rgba(<%= color %>,1)'></div>
+      <div id="background-blur"></div>
+
       <% } %>
       <nav>
         <div class="logo">
-          <h4>Spotify</h4>
+          <h4 >Spotify</h4>
         </div>
         <ul>
           <% if (user) { %>
@@ -28,14 +30,14 @@
           <% } %> <% if (!user) { %>
           <li><a href="/auth/login">Login</a></li>
           <% } %>
-          <li><a href="/">Homepage</a></li>
+          <li><a href="/" >Homepage</a></li>
         </ul>
       </nav>
 
       <header>
         <% if (!user) { %>
         <h2 style="font-weight:bold; margin-top: 20px; margin-bottom: 2px;">
-          Sign in width Spotify to continue...
+          Sign in with Spotify to continue...
         </h2>
         <% } %> <% if (user && songloaded) { %>
         <img style="margin-top: 20px" src="<%= albumCover%>" />

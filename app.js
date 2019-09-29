@@ -6,6 +6,7 @@ const express = require("express"),
   keys = require("./config/keys"),
   passport = require("passport"),
   cookieSession = require("cookie-session"),
+  Vibrant = require("node-vibrant"),
   app = express();
 
 //set view engine and views folder
@@ -43,37 +44,45 @@ app.get("/", (req, res) => {
   let artist;
   let song;
   let songUrl;
+  let rgb;
   if ("undefined" != typeof accToken) {
     getRecentlyPlayed(accToken)
       .then(data => {
-        if (data) {
-          songUrl = data.album.images[0].url;
-          song = data.name;
-          artist = data.artists[0].name;
-        }
+        songUrl = data.album.images[0].url;
+        song = data.name;
+        artist = data.artists[0].name;
       })
       .then(() => {
-        res.render("home", {
-          user: req.user,
-          songTitle: song,
-          artistName: artist,
-          albumCover: songUrl,
-          songloaded: true,
-          color: "blue"
-        });
-      })
-      .catch(error => console.log(error));
+        getColorPalette(songUrl)
+          .then(data => {
+            rgb = data.Vibrant.rgb;
+          })
+          .then(() => {
+            rgb = rgb[0] + "," + rgb[1] + "," + rgb[2];
+            res.render("home", {
+              user: req.user,
+              songTitle: song,
+              artistName: artist,
+              albumCover: songUrl,
+              songloaded: true,
+              color: rgb
+            });
+          }).catch(error => console.log(error));
+      }).catch(error => console.log(error));
   } else {
     res.render("home", {
       user: req.user,
       songTitle: song,
       artistName: artist,
       albumCover: songUrl,
-      songloaded: false,
-      color: "red"
+      songloaded: false
     });
   }
 });
+
+function getColorPalette(image) {
+  return Vibrant.from(image).getPalette();
+}
 
 app.listen(8888, () => {
   console.log("app now listening for requests on port 8888");
