@@ -39,49 +39,61 @@ db.on("error", console.error.bind(console, "connection error"));
 // set up routes
 app.use("/auth", authRoutes);
 
+var artist;
+var song;
+var songUrl;
+var rgb;
+
 //render homescreen
 app.get("/", (req, res) => {
-  let artist;
-  let song;
-  let songUrl;
-  let rgb;
   if ("undefined" != typeof accToken) {
-    getRecentlyPlayed(accToken)
-      .then(data => {
-        songUrl = data.album.images[0].url;
-        song = data.name;
-        artist = data.artists[0].name;
-      })
-      .then(() => {
-        getColorPalette(songUrl)
-          .then(data => {
-            rgb = data.Vibrant.rgb;
-          })
-          .then(() => {
-            rgb = rgb[0] + "," + rgb[1] + "," + rgb[2];
-            res.render("home", {
-              user: req.user,
-              songTitle: song,
-              artistName: artist,
-              albumCover: songUrl,
-              songloaded: true,
-              color: rgb
-            });
-          }).catch(error => console.log(error));
-      }).catch(error => console.log(error));
-  } else {
-    res.render("home", {
-      user: req.user,
-      songTitle: song,
-      artistName: artist,
-      albumCover: songUrl,
-      songloaded: false
+    getRecentlyPlayed(accToken).then(data => {
+      if (data) {
+        loadSongInfo(data);
+        getColorPalette(songUrl).then(() => {
+          loadHomeWithTrack(req, res);
+        });
+      } else {
+        loadHomeWithoutTrack(req, res);
+      }
     });
+  } else {
+    loadHomeWithoutTrack(req, res);
   }
 });
 
+function loadHomeWithTrack(req, res) {
+  rgb = rgb[0] + "," + rgb[1] + "," + rgb[2];
+  res.render("home", {
+    user: req.user,
+    songTitle: song,
+    artistName: artist,
+    albumCover: songUrl,
+    songloaded: true,
+    color: rgb
+  });
+}
+
+//helper functions 
+function loadHomeWithoutTrack(req, res) {
+  res.render("home", {
+    user: req.user,
+    songloaded: false
+  });
+}
+
+function loadSongInfo(data) {
+  songUrl = data.album.images[0].url;
+  song = data.name;
+  artist = data.artists[0].name;
+}
+
 function getColorPalette(image) {
-  return Vibrant.from(image).getPalette();
+  return Vibrant.from(image)
+    .getPalette()
+    .then(data => {
+      rgb = data.Vibrant.rgb;
+    });
 }
 
 app.listen(8888, () => {
