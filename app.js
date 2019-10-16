@@ -60,8 +60,11 @@ app.get("/", (req, res) => {
   } else {
     loadHomeWithoutTrack(req, res);
   }
+
 });
 
+
+//helper functions 
 function loadHomeWithTrack(req, res) {
   rgb = rgb[0] + "," + rgb[1] + "," + rgb[2];
   res.render("home", {
@@ -74,7 +77,6 @@ function loadHomeWithTrack(req, res) {
   });
 }
 
-//helper functions 
 function loadHomeWithoutTrack(req, res) {
   res.render("home", {
     user: req.user,
@@ -86,7 +88,8 @@ function loadSongInfo(data) {
   songUrl = data.album.images[0].url;
   song = data.name;
   artist = data.artists[0].name;
-}
+  }
+
 
 function getColorPalette(image) {
   return Vibrant.from(image)
