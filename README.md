@@ -4,7 +4,8 @@ over a colorful background. Built with Node.js, Javascript, HTML & Javascript.  
 
 ## Project Status
 
-
+This project currently works as intended but I plan to continue developing it with more features, as well as update the 
+look and feel of the app to be more visually appealing.
 
 ## Video Walkthrough
 
