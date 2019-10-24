@@ -5,7 +5,6 @@ body {
 
 #background {
   background-image: url("fog.jpg");
-
   background-size: cover;
   position: relative;
   top: 0;

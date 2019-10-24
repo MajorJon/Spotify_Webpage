@@ -1,16 +1,13 @@
 const passport = require("passport"),
   SpotifyStrategy = require("passport-spotify").Strategy,
-  keys = require("./keys"),
-  User = require("../models/user-model");
+  keys = require("./keys");
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser((id, done) => {
-  User.findById(id).then(user => {
-    done(null, user);
-  });
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
 });
 
 passport.use(
@@ -20,22 +17,22 @@ passport.use(
       clientSecret: keys.spotify.clientSecret,
       callbackURL: "/auth/spotify/callback"
     },
-    (accessToken, refreshToken, profile, done) => {
-      accToken = accessToken;
-      User.findOne({ spotifyId: profile.id }).then(currentUser => {
-        if (currentUser) {
-          done(null, currentUser);
-        } else {
-          new User({
-            username: profile.displayName,
-            spotifyId: profile.id
-          })
-            .save()
-            .then(newUser => {
-              done(null, newUser);
-            });
-        }
-      });
+    (accessToken, refreshToken, expires_in, profile, done) => {
+      try {
+        const userResponse = {
+          ...profile,
+          accessToken,
+          refreshToken,
+          expires_in
+        };
+        done(null, userResponse);
+      } catch (err) {
+        done(err, null, {
+          message: "An error ocurred trying to authenticate the user"
+        });
+      }
     }
   )
 );
+
+

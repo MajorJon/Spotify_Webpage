@@ -2,9 +2,8 @@ const express = require("express"),
   authRoutes = require("./routes/auth-routes"),
   passportSetup = require("./config/passport-setup"),
   getRecentlyPlayed = require("./config/https-requests"),
-  mongoose = require("mongoose"),
   keys = require("./config/keys"),
-  passport = require("passport"),
+  passport = require("passport"), 
   cookieSession = require("cookie-session"),
   Vibrant = require("node-vibrant"),
   app = express();
@@ -26,16 +25,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-//connect to mongodb
-mongoose.connect(keys.mongodb.dbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
-var db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "connection error"));
-
 // set up routes
 app.use("/auth", authRoutes);
 
@@ -46,8 +35,9 @@ var rgb;
 
 //render homescreen
 app.get("/", (req, res) => {
-  if ("undefined" != typeof accToken) {
-    getRecentlyPlayed(accToken).then(data => {
+  var user = req.session.passport.user;
+  if (user) {
+    getRecentlyPlayed(user.accessToken).then(data => {
       if (data) {
         loadSongInfo(data);
         getColorPalette(songUrl).then(() => {
