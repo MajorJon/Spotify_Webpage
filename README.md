@@ -2,6 +2,9 @@
 This is a simple Spotify app that displays the currently playing track on the home screen along with the album cover, 
 over a colorful background. Built with Node.js, Javascript, HTML & Javascript.  Uses Express.js, Passport.js, and ejs.
 
+## 1.1 Update
+Removed all mongoDB functionality (it wasn't necessary for the app to function).  Everything is now stored in the session.  Also fixed a bug that made it so the homepage wouldn't display the current track on app reset.  Now, information is stored in a cookie, allowing for the session to stay active on reset.
+
 ## Project Status
 
 This project currently works as intended but I plan to continue developing it with more features, as well as update the 
@@ -31,17 +34,6 @@ module.exports = {
   },
 ```
   
-Create a Cluster through Mongo:
-https://www.mongodb.com/
-
-Click 'connect' once you've created cluster, enter your DB_URI (with username and password) in the keys.js file:
-
-```javascript
-  mongodb: {
-    dbURI: 'DB_URI'
-  },
-```
-
 Create a cookie key in file:
 
 ```
@@ -56,7 +48,7 @@ Installation:
 `npm install`  
 
 To start server:
-`node app`
+`nodemon app`
 
 To visit app:
 `localhost:8888`  
