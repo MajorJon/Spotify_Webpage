@@ -35,7 +35,7 @@ var rgb;
 
 //render homescreen
 app.get("/", (req, res) => {
-  var user = req.session.passport.user;
+  let user = req.user || null;
   if (user) {
     getRecentlyPlayed(user.accessToken).then(data => {
       if (data) {
